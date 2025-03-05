@@ -120,6 +120,18 @@ export default function PanelPage() {
     ws.current?.send(JSON.stringify(resetScoreboard));
   };
 
+  const resetTimer = () => {
+    const updatedScoreboard: Scoreboard = {
+      ...scoreboard,
+      time: 600,
+      isPaused: true,
+      team1: { ...scoreboard.team1, timeout: false },
+      team2: { ...scoreboard.team2, timeout: false },
+    };
+    setScoreboard(updatedScoreboard);
+    ws.current?.send(JSON.stringify(updatedScoreboard));
+  };
+
   const revertLastChanges = (team: "team1" | "team2") => {
     if (previousScore) {
       const revertedScoreboard = {
@@ -230,18 +242,24 @@ export default function PanelPage() {
           <div className="h-[50%] flex flex-col">
             <h2 className="text-2xl font-bold mb-4 text-center uppercase">Laiks</h2>
             <div className="grid grid-rows-2 gap-2 flex-grow">
-            <p className={`${buttonStyle} w-full`}>
-              {scoreboard ? (
-                `${Math.floor(scoreboard.time / 60).toString().padStart(2, '0')}:${(scoreboard.time % 60).toString().padStart(2, '0')}`
-              ) : (
-                "00:00"
-              )}
-            </p> 
+              <p className={`${buttonStyle} w-full`}>
+                {scoreboard ? (
+                  `${Math.floor(scoreboard.time / 60).toString().padStart(2, '0')}:${(scoreboard.time % 60).toString().padStart(2, '0')}`
+                ) : (
+                  "00:00"
+                )}
+              </p> 
               <button
                 onClick={toggleTimer}
                 className={`${buttonStyle} w-full`}
               >
                 {scoreboard?.isPaused ? "Start" : "Pause"}
+              </button>
+              <button
+                onClick={resetTimer}
+                className={`${buttonStyle} w-full`}
+              >
+                Reset
               </button>
             </div>
           </div>

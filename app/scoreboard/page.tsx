@@ -8,7 +8,7 @@ interface Team {
   score: number;
   color: string;
   timeout: boolean;
-}
+} 
 
 interface ScoreboardState {
   team1: Team;

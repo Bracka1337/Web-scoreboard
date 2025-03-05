@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import { PluginAPI } from 'tailwindcss/types/config'; // Import the type
 
 export default {
   content: [
@@ -26,7 +27,7 @@ export default {
     },
   },
   plugins: [
-    function ({ addUtilities }) {
+    function ({ addUtilities }: { addUtilities: PluginAPI['addUtilities'] }) {
       addUtilities(
         {
           '.clip-trapezoid-bg': {
@@ -42,7 +43,10 @@ export default {
             clipPath: 'polygon(35% 0, 100% 0, 100% 100%, 0% 100%)',
           },
         },
-        ['responsive', 'hover']
+        { variants: ['responsive', 'hover'] } as { variants?: string[] } & Partial<{
+          respectPrefix: boolean;
+          respectImportant: boolean;
+        }>
       )
     },
   ],
